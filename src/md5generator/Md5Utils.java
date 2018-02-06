@@ -1,4 +1,4 @@
-package com.techedgegroup.md5generator;
+package md5generator;
 
 import java.io.File;
 import java.io.FileInputStream;
