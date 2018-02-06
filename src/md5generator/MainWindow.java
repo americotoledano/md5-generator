@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
@@ -78,6 +79,7 @@ public class MainWindow
 		pn_mainPanel.add(lb_loadFiles, gridConf);
 		
 		tf_loadFiles = new JTextField(20);
+		tf_loadFiles.setEditable(false);
 		gridConf.gridx = 1;
 		gridConf.gridy = 0;
 		gridConf.gridwidth = 1;
@@ -85,7 +87,7 @@ public class MainWindow
 		pn_mainPanel.add(tf_loadFiles, gridConf);
 		
 	    bt_loadFiles = new JButton();
-		bt_loadFiles.setText("...");
+		bt_loadFiles.setText("Buscar...");
 		bt_loadFiles.addMouseListener(new fileChooserWindow());
 		gridConf.gridx = 2;
 		gridConf.gridy = 0;
@@ -96,7 +98,7 @@ public class MainWindow
 		bt_createMD5files = new JButton();
 		bt_createMD5files.setText("Crear ficheros MD5");
 		bt_createMD5files.addMouseListener(new createMD5file());
-		bt_createMD5files.setEnabled(false);
+		//bt_createMD5files.setEnabled(false);
 		gridConf.gridx = 1;
 		gridConf.gridy = 1;
 		gridConf.gridwidth = 2;
@@ -146,13 +148,20 @@ public class MainWindow
 	{
 		public void mouseReleased(MouseEvent event)
 	    {
-			for(int i=0; i<files.length; i++)
+			if( files != null )
 			{
-				if( files[i].exists() )
+				for(int i=0; i<files.length; i++)
 				{
-					//System.out.println("Procesando " + files[i].getName() );
-					writeMd5File( files[i].getPath(), getMd5FilePath(files[i]) );
+					if( files[i].exists() )
+					{
+						//System.out.println("Procesando " + files[i].getName() );
+						writeMd5File( files[i].getPath(), getMd5FilePath(files[i]) );
+					}
 				}
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null, "No se ha seleccionado ningún fichero.", "Error cargando ficheros", JOptionPane.WARNING_MESSAGE);
 			}
 	    }
 		private String getMd5FilePath(File file)
