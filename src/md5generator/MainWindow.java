@@ -28,7 +28,7 @@ import javax.swing.border.TitledBorder;
 public class MainWindow
 {
 	private final int width = 700;
-	private final int height = 200;
+	private final int height = 250;
 	private JFrame windowFrame;
 	private JPanel pn_mainPanel;
 	private JPanel pn_fileSelection;
@@ -81,7 +81,11 @@ public class MainWindow
 		//****************************************************//		
 		pn_mainPanel = new JPanel( new GridBagLayout() );
 		
+		// Main panel padding
+		pn_mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		
 		GridBagConstraints gridConf = new GridBagConstraints();
+		
 			
 			//****************************************************//
 			// FILE SELECTION SUBPANEL
