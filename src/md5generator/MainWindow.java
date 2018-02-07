@@ -26,6 +26,8 @@ public class MainWindow
 	private final int height = 200;
 	private JFrame windowFrame;
 	private JPanel pn_mainPanel;
+	private JPanel pn_fileSelection;
+	private JPanel pn_fileCreation;
 	private JButton bt_loadFiles;
 	private JButton bt_createMD5files;
 	private JLabel lb_loadFiles;
@@ -68,43 +70,74 @@ public class MainWindow
 	
 	private void addLayout()
 	{
+		//****************************************************//
+		// MAIN PANEL
+		//****************************************************//		
 		pn_mainPanel = new JPanel( new GridBagLayout() );
-		GridBagConstraints gridConf = new GridBagConstraints();
 		
-		lb_loadFiles = new JLabel("Seleccionar ficheros: ");
+		GridBagConstraints gridConf = new GridBagConstraints();
+			
+			//****************************************************//
+			// FILE SELECTION SUBPANEL
+			//****************************************************//
+			pn_fileSelection = new JPanel( new GridBagLayout() );
+			
+			lb_loadFiles = new JLabel("Seleccionar ficheros: ");
+			gridConf.gridx = 0;
+			gridConf.gridy = 0;
+			gridConf.gridwidth = 1;
+			gridConf.fill = GridBagConstraints.HORIZONTAL;
+			pn_fileSelection.add(lb_loadFiles, gridConf);
+			
+			tf_loadFiles = new JTextField(20);
+			tf_loadFiles.setEditable(false);
+			gridConf.gridx = 1;
+			gridConf.gridy = 0;
+			gridConf.gridwidth = 1;
+			gridConf.fill = GridBagConstraints.VERTICAL;
+			pn_fileSelection.add(tf_loadFiles, gridConf);
+			
+		    bt_loadFiles = new JButton();
+			bt_loadFiles.setText("Buscar...");
+			bt_loadFiles.addMouseListener(new fileChooserWindow());
+			gridConf.gridx = 2;
+			gridConf.gridy = 0;
+			gridConf.gridwidth = 1;
+			gridConf.fill = GridBagConstraints.HORIZONTAL;
+			pn_fileSelection.add(bt_loadFiles, gridConf);
+			
+			
+			//****************************************************//
+			// FILE CREATION SUBPANEL
+			//****************************************************//
+			pn_fileCreation = new JPanel( new GridBagLayout() );
+			
+			bt_createMD5files = new JButton();
+			bt_createMD5files.setText("Crear ficheros MD5");
+			bt_createMD5files.addMouseListener(new createMD5file());
+			//bt_createMD5files.setEnabled(false);
+			gridConf.gridx = 0;
+			gridConf.gridy = 0;
+			gridConf.gridwidth = 2;
+			gridConf.fill = GridBagConstraints.HORIZONTAL;
+			pn_fileCreation.add(bt_createMD5files, gridConf);
+			
+			
+		// File selection subpanel added to main panel
 		gridConf.gridx = 0;
 		gridConf.gridy = 0;
-		gridConf.gridwidth = 1;
+		gridConf.gridwidth = 2;
 		gridConf.fill = GridBagConstraints.HORIZONTAL;
-		pn_mainPanel.add(lb_loadFiles, gridConf);
+		pn_mainPanel.add(pn_fileSelection, gridConf);
 		
-		tf_loadFiles = new JTextField(20);
-		tf_loadFiles.setEditable(false);
-		gridConf.gridx = 1;
-		gridConf.gridy = 0;
-		gridConf.gridwidth = 1;
-		gridConf.fill = GridBagConstraints.VERTICAL;
-		pn_mainPanel.add(tf_loadFiles, gridConf);
-		
-	    bt_loadFiles = new JButton();
-		bt_loadFiles.setText("Buscar...");
-		bt_loadFiles.addMouseListener(new fileChooserWindow());
-		gridConf.gridx = 2;
-		gridConf.gridy = 0;
-		gridConf.gridwidth = 1;
-		gridConf.fill = GridBagConstraints.HORIZONTAL;
-		pn_mainPanel.add(bt_loadFiles, gridConf);
-		
-		bt_createMD5files = new JButton();
-		bt_createMD5files.setText("Crear ficheros MD5");
-		bt_createMD5files.addMouseListener(new createMD5file());
-		//bt_createMD5files.setEnabled(false);
-		gridConf.gridx = 1;
+		// Selection subpanel added to main panel
+		gridConf.gridx = 0;
 		gridConf.gridy = 1;
 		gridConf.gridwidth = 2;
 		gridConf.fill = GridBagConstraints.HORIZONTAL;
-		pn_mainPanel.add(bt_createMD5files, gridConf);
+		pn_mainPanel.add(pn_fileCreation, gridConf);
 		
+		// Main panel added to the window
 		windowFrame.getContentPane().add(pn_mainPanel);
 	}
 	
