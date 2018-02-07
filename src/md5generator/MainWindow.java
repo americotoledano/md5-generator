@@ -13,11 +13,14 @@ import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 
 public class MainWindow
@@ -30,7 +33,6 @@ public class MainWindow
 	private JPanel pn_fileCreation;
 	private JButton bt_loadFiles;
 	private JButton bt_createMD5files;
-	private JLabel lb_loadFiles;
 	private JTextField tf_loadFiles;
 	private JFileChooser fileChooser;
 	private File[] files;
@@ -82,29 +84,35 @@ public class MainWindow
 			//****************************************************//
 			pn_fileSelection = new JPanel( new GridBagLayout() );
 			
-			lb_loadFiles = new JLabel("Seleccionar ficheros: ");
-			gridConf.gridx = 0;
+			bt_loadFiles = new JButton();
+			bt_loadFiles.setText("Buscar...");
+			bt_loadFiles.addMouseListener(new fileChooserWindow());
+			gridConf.gridx = 1;
 			gridConf.gridy = 0;
 			gridConf.gridwidth = 1;
 			gridConf.fill = GridBagConstraints.HORIZONTAL;
-			pn_fileSelection.add(lb_loadFiles, gridConf);
+			pn_fileSelection.add(bt_loadFiles, gridConf);
 			
 			tf_loadFiles = new JTextField(20);
 			tf_loadFiles.setEditable(false);
-			gridConf.gridx = 1;
+			gridConf.gridx = 2;
 			gridConf.gridy = 0;
 			gridConf.gridwidth = 1;
 			gridConf.fill = GridBagConstraints.VERTICAL;
 			pn_fileSelection.add(tf_loadFiles, gridConf);
 			
-		    bt_loadFiles = new JButton();
-			bt_loadFiles.setText("Buscar...");
-			bt_loadFiles.addMouseListener(new fileChooserWindow());
-			gridConf.gridx = 2;
-			gridConf.gridy = 0;
-			gridConf.gridwidth = 1;
-			gridConf.fill = GridBagConstraints.HORIZONTAL;
-			pn_fileSelection.add(bt_loadFiles, gridConf);
+			
+			// Panel border configuration
+			//// Border 1: title
+			TitledBorder br_title = new TitledBorder("Seleccionar ficheros");
+			br_title.setTitleJustification(TitledBorder.LEFT);
+			br_title.setTitlePosition(TitledBorder.TOP);
+			
+			//// Border 2: margin
+			Border br_margin = new EmptyBorder(10, 10, 10, 10);
+			
+			//// Borders added to panel
+			pn_fileSelection.setBorder(new CompoundBorder(br_title, br_margin));
 			
 			
 			//****************************************************//
@@ -181,13 +189,14 @@ public class MainWindow
 	{
 		public void mouseReleased(MouseEvent event)
 	    {
+			// If any file has been selected
 			if( files != null )
 			{
 				for(int i=0; i<files.length; i++)
 				{
 					if( files[i].exists() )
 					{
-						//System.out.println("Procesando " + files[i].getName() );
+						//System.out.println( getMd5FilePath(files[i]) );
 						writeMd5File( files[i].getPath(), getMd5FilePath(files[i]) );
 					}
 				}
