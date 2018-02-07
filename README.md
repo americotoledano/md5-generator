@@ -1,2 +1,2 @@
-# md5-generator
-Application to generate md5 files
+# MD5 files generator
+Application to generate md5 files.

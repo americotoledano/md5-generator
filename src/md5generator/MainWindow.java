@@ -10,11 +10,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -24,7 +22,11 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-
+/**
+ * Application main window
+ * 
+ * @author pedro.toledano
+ */
 public class MainWindow
 {
 	private final int width = 700;
@@ -56,6 +58,9 @@ public class MainWindow
 		windowFrame.setVisible(true);
 	}
 	
+	/**
+	 * Sets the window
+	 */
 	private void initGUI()
 	{
 		// Creates the window frame
@@ -74,6 +79,9 @@ public class MainWindow
 		windowFrame.setVisible(true);
 	}
 	
+	/**
+	 * Sets the window content
+	 */
 	private void addLayout()
 	{
 		//****************************************************//
@@ -203,15 +211,16 @@ public class MainWindow
 			
 			// Creates the invoice chooser
 			fileChooser = new JFileChooser();
+			
 			// Sets the initial directory
 			fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 			fileChooser.setMultiSelectionEnabled(true);
-			//fileChooser.showOpenDialog(mainPanel);
+			
 			fileChooser.showDialog(pn_mainPanel, "Cargar");
 			
 			files = fileChooser.getSelectedFiles();
 			
-			// If any file has been selected, the "search" button will be enabled
+			// If any file has been selected
 			if( files.length > 0 )
 			{
 				// Fill the file selected text field
@@ -241,12 +250,14 @@ public class MainWindow
 			
 			// Creates the invoice chooser
 			directoryChooser = new JFileChooser();
+			
 			// Sets the initial directory
 			directoryChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 			directoryChooser.setMultiSelectionEnabled(false);
+			
+			// Only directories can be selected
 			directoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			directoryChooser.setAcceptAllFileFilterUsed(false);
-			//fileChooser.showOpenDialog(mainPanel);
 			
 			if ( directoryChooser.showDialog(pn_mainPanel, "Seleccionar") == JFileChooser.APPROVE_OPTION)
 			{
@@ -263,49 +274,56 @@ public class MainWindow
 			// If any file has been selected
 			if( files != null )
 			{
+				// For each file, a MD5 file is created
 				for(int i=0; i<files.length; i++)
 				{
 					if( files[i].exists() )
 					{
-						//System.out.println( getMd5FilePath(files[i]) );
 						writeMd5File( files[i].getPath(), getMd5FilePath(files[i]) );
 					}
 				}
+				
+				JOptionPane.showMessageDialog(null, "Ficheros MD5 creados correctamente.", "Finalizado", JOptionPane.INFORMATION_MESSAGE);
 			}
 			else
 			{
 				JOptionPane.showMessageDialog(null, "No se ha seleccionado ningún fichero.", "Error cargando ficheros", JOptionPane.WARNING_MESSAGE);
 			}
 	    }
+		
+		/**
+		 * Gets the path where the MD5 file will be created.
+		 * 
+		 * @param file source file.
+		 * @return Full path of the MD5 file to be created.
+		 */
 		private String getMd5FilePath(File file)
 		{
 			// MD5 filename is the same as the source file, changing the extension
 			String fileName = file.getName().substring( 0, file.getName().lastIndexOf('.') );
 			fileName = fileName + ".md5";
 			
-			//System.out.println("En " + file.getParent() + '/' + fileName);
 			return ( outputPath + '/' + fileName );
 		}
 		
 		/**
+		 * Calculates the MD5 checksum and creates a MD5 file with this value.
 		 * 
-		 * @param sourceFilePath Path of the source file. For example: C:\Users\pedro.toledano\Desktop\file.csv
-		 * @param md5FilePath Path of the MD5 file to be created. For example: C:\Users\pedro.toledano\Desktop\file.md5
+		 * @param sourceFilePath path of the source file. For example: C:\Users\pedro.toledano\Desktop\file.csv
+		 * @param md5FilePath path of the MD5 file to be created. For example: C:\Users\pedro.toledano\Desktop\file.md5
 		 */
-		private void writeMd5File(String sourceFilePath, String md5FilePath) /*DOS FUNCIONES CON EL MISMO NOMBRE*/
+		private void writeMd5File(String sourceFilePath, String md5FilePath)
 		{
-			BufferedWriter bw;
-			
-			System.out.println(sourceFilePath + " " + md5FilePath);
-			
 			try
 			{
-				bw = new BufferedWriter(new FileWriter(md5FilePath));
+				// Sets the file where the MD5 checksum will be written
+				BufferedWriter bw = new BufferedWriter( new FileWriter(md5FilePath) );
 				
+				// Gets the MD5 checksum of the file
 				Md5Utils checksum = new Md5Utils(sourceFilePath);
-				bw.write( checksum.md5FromFile() );
 				
-				//System.out.println("Con MD5: " + checksum.md5FromFile() + "de: " + md5FilePath);
+				// Write the MD5 file
+				bw.write( checksum.md5FromFile() );
 				
 				bw.close();
 			}

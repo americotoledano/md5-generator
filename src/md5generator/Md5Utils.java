@@ -10,7 +10,6 @@ import org.apache.commons.io.IOUtils;
  * Class to work with MD5 hashes
  * 
  * @author pedro.toledano
- *
  */
 public class Md5Utils
 {
@@ -62,7 +61,7 @@ public class Md5Utils
 	 * Gets the md5 checksum from the file defined by the {@link #setFile(File) setFile(File)} method,
 	 * the {@link #setFile(String, String) setFile(String, String)} method or by the constructor.
 	 * 
-	 * @return md5 checksum of the file
+	 * @return md5 checksum of the source file
 	 */
 	public String md5FromFile()
 	{
@@ -73,10 +72,13 @@ public class Md5Utils
 
 		try
 		{
+			// Opens the file to read
 			fileInputStream = new FileInputStream(file);
 
-			md5Checksum = DigestUtils.md5Hex(IOUtils.toByteArray(fileInputStream));
+			// Calculates the MD5 checksum
+			md5Checksum = DigestUtils.md5Hex( IOUtils.toByteArray(fileInputStream) );
 
+			// Closes file
 			fileInputStream.close();
 
 		}
